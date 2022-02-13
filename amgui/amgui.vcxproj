@@ -29,16 +29,19 @@
     <ClInclude Include="..\..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\implot\implot.h" />
     <ClInclude Include="..\..\implot\implot_internal.h" />
+    <ClInclude Include="imgui_utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\..\imgui\imgui.cpp" />
+    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\implot\implot.cpp" />
     <ClCompile Include="..\..\implot\implot_items.cpp" />
+    <ClCompile Include="imgui_utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -117,11 +120,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -135,11 +138,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,11 +156,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -171,11 +174,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
