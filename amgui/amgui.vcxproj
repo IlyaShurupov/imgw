@@ -29,7 +29,11 @@
     <ClInclude Include="..\..\imgui\imstb_textedit.h" />
     <ClInclude Include="..\..\implot\implot.h" />
     <ClInclude Include="..\..\implot\implot_internal.h" />
+    <ClInclude Include="fa_solid_900.h" />
+    <ClInclude Include="font_awesome_5.h" />
+    <ClInclude Include="imgui_notify.h" />
     <ClInclude Include="imgui_utils.h" />
+    <ClInclude Include="tahoma.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_glfw.cpp" />
@@ -125,6 +129,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -143,6 +148,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -161,6 +167,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -179,6 +186,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>

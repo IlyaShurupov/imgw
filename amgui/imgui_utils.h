@@ -12,3 +12,8 @@ void SubMenuItemEnd();
 void SubMenuEnd(int level);
 ImVec2 AlightRight();
 bool EditorWindow(const char* name);
+
+void init_notify();
+void example_nofify();
+void render_notify();
+void Notify(const char* desc, int codec = 0);
