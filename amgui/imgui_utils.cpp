@@ -37,7 +37,7 @@ int white_step = 10;
 int butt_width = 60;
 int butt_height = 30;
 
-char style_save_path[100] = "/style_gray.gui";
+char style_save_path[100] = "style";
 bool first_init = true;
 
 void StyleEditorSave(const char* name) {
@@ -83,11 +83,9 @@ void StyleEditor() {
   ImGui::SliderInt("Gray", &gray, 0, 255); ImGui::SameLine(); ImGui::SliderInt("GStep", &gray_step, 0, 100);
   ImGui::SliderInt("White", &white, 0, 255); ImGui::SameLine(); ImGui::SliderInt("WStep", &white_step, 0, 100);
 
-  ImGui::Separator();
-
   ImGui::PopItemWidth();
 
-  ImGui::InputText("Style Path", style_save_path, 100);
+  ImGui::InputText("Style Name", style_save_path, 100);
   if (ImGui::Button("Save")) {
     StyleEditorSave(style_save_path);
   } ImGui::SameLine();
@@ -477,4 +475,6 @@ void render_notify() {
   ImGui::RenderNotifications(); // <-- Here we render all notifications
   ImGui::PopStyleVar(1); // Don't forget to Pop()
   ImGui::PopStyleColor(1);
+  
+  //ImGui::notifications.~vector();
 }
