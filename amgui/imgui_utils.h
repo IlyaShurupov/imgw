@@ -3,7 +3,8 @@
 #include "imgui.h"
 
 void MainWindow(const char* name);
-void style_edeting();
+const char* get_font_path();
+void apply_style();
 void ToolTip(const char* desc);
 
 bool SubMenuBegin(const char* desc, int level);
