@@ -4,9 +4,6 @@
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
 
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <GLES2/gl2.h>
-#endif
 #include <GLFW/glfw3.h> 
 
 #include <iostream>
@@ -25,7 +22,7 @@
 #endif
 
 static void glfw_error_callback(int error, const char* description) {
-  fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -33,138 +30,97 @@ ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 #define GETTIMEMSC() (time_t)(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch()).count())
 #define THREAD_SLEEP(time_ms) std::this_thread::sleep_for(std::chrono::milliseconds(time_ms))
 
-void imGuiWindowInitialize();
-void imGuiWindowDraw();
-void imGuiWindowFinalize();
+imGuiDefaultApp::imGuiDefaultApp() {
+	glfwSetErrorCallback(glfw_error_callback);
+	if (!glfwInit()) {
+		initialized = false;
+		return;
+	}
 
-int WinMain(int, char**);
+	const char* glsl_version = "#version 130";
+	//glfwWindowHint(GLFW_DECORATED, false);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 
-int main() {
-  return WinMain(NULL, NULL);
+	window = glfwCreateWindow(1280, 720, " ", NULL, NULL);
+	if (window == NULL) {
+		initialized = false;
+		return;
+	}
+
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1); // Enable vsync
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+
+	ImPlot::CreateContext();
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF(get_font_path(), 18.0f);
+
+	init_notify();
+
 }
 
-#define MAX_FONT_PATH 200
-#define FONT_NAME_LEN 8
-static bool path_calculated = false;
-
-const char* get_font_path() {
-  
-  static char path[MAX_FONT_PATH];
-  
-  const char* this_path = __FILE__;
-  const char* font_name = "font.ttf";
-
-  if (path_calculated) {
-    return path;
-  }
-
-  int len = 0;
-  for (const char* i = this_path; *i != '\0'; i++, len++) {
-    path[len] = *i;
-  }
-  path[len] = '\0';
-
-  for (int start = len; start > 0; start--) {
-    if (path[start] == '\\' || path[start] == '/') {
-      start++;
-      for (int i = 0; i < FONT_NAME_LEN; i++, start++) {
-        path[start] = font_name[i];
-      }
-      path[start] = '\0';
-      break;
-    }
-  }
-
-  path_calculated = true;
-  return path;
+bool imGuiDefaultApp::mainloop_tick() {
+	return false;
 }
 
-int WinMain(int, char**) {
+void imGuiDefaultApp::mainloop() {
+	if (!initialized) {
+		return;
+	}
 
-  glfwSetErrorCallback(glfw_error_callback);
-  if (!glfwInit()) {
-    return 1;
-  }
+	while (!glfwWindowShouldClose(window)) {
 
-  const char* glsl_version = "#version 130";
-  //glfwWindowHint(GLFW_DECORATED, false);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-  //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+		time_t fstart = GETTIMEMSC();
 
-  GLFWwindow* window = glfwCreateWindow(1280, 720, " ", NULL, NULL);
-  if (window == NULL) {
-    return 1;
-  }
+		glfwPollEvents();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
-  glfwMakeContextCurrent(window);
-  glfwSwapInterval(1); // Enable vsync
+		MainWindow("as");
 
-  // Setup Dear ImGui context
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO(); (void)io;
-  //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-  //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-  ImGui::StyleColorsDark();
+		mainloop_tick();
 
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init(glsl_version);
+		render_notify();
 
-  ImPlot::CreateContext();
-  ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		ImGui::Render();
+		int display_w, display_h;
+		glfwGetFramebufferSize(window, &display_w, &display_h);
+		glViewport(0, 0, display_w, display_h);
+		glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+		glClear(GL_COLOR_BUFFER_BIT);
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		glfwSwapBuffers(window);
 
-  ImFont* font1 = io.Fonts->AddFontFromFileTTF(get_font_path(), 18.0f);
+		time_t fend = GETTIMEMSC();
+		time_t rem = fdur - (fend - fstart);
+		if (rem > 0) {
+			THREAD_SLEEP(rem);
+		}
+	}
+};
 
-  init_notify();
+imGuiDefaultApp::~imGuiDefaultApp() {
+	// Cleanup
+	ImPlot::DestroyContext();
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
-  time_t fdur = 1000 / 60.f;
-
-  imGuiWindowInitialize();
-
-  while (!glfwWindowShouldClose(window)) {
-    
-    time_t fstart = GETTIMEMSC();
-
-    glfwPollEvents();
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    MainWindow("as");
-
-    imGuiWindowDraw();
-    
-    render_notify();
-
-    ImGui::Render();
-    int display_w, display_h;
-    glfwGetFramebufferSize(window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-    glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    glfwSwapBuffers(window);
-
-    time_t fend = GETTIMEMSC();
-    time_t rem = fdur - (fend - fstart);
-    if (rem > 0) {
-      THREAD_SLEEP(rem);
-    }
-  }
-
-
-  // Cleanup
-  ImPlot::DestroyContext();
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
-
-  glfwDestroyWindow(window);
-  glfwTerminate();
-
-  imGuiWindowFinalize();
-
-  return 0;
+	glfwDestroyWindow(window);
+	glfwTerminate();
 }

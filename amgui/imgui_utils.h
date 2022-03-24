@@ -2,9 +2,24 @@
 
 #include "imgui.h"
 
+class imGuiDefaultApp {
+
+  bool initialized = true;
+  time_t fdur = 1000 / 60.f;
+  struct GLFWwindow* window;
+
+  imGuiDefaultApp();
+  virtual bool mainloop_tick();
+  void mainloop();
+
+  ~imGuiDefaultApp();
+};
+
+const char* get_font_path();
+
 void MainWindow(const char* name);
-void style_edeting();
 void ToolTip(const char* desc);
+void apply_style();
 
 bool SubMenuBegin(const char* desc, int level);
 bool SubMenuItemBegin(const char* desc);
