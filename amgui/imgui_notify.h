@@ -132,6 +132,7 @@ public:
 		case ImGuiToastType_Info:
 			return { 0, 157, 255, 255 }; // Blue
 		}
+    return { 0, 0, 0, 0 };
 	}
 
 	NOTIFY_INLINE auto get_icon() -> const char*

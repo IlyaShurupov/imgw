@@ -150,7 +150,7 @@ ImVec4 gui_col(int range, int child_range, bool active = false, bool child = fal
   }
   float a;
   if (pa == -1) {
-    a = child * 0.5 + !child * 1;
+    a = child * 0.5f + !child * 1;
   }
   else {
     a = pa;
@@ -376,7 +376,7 @@ void SubMenuEnd(int level) {
 ImVec2 AlightRight() {
   ImGui::Spacing();
   ImGui::SameLine(ImGui::GetWindowContentRegionWidth() - butt_width);
-  return ImVec2(butt_width, butt_height);
+  return ImVec2((float)butt_width, (float)butt_height);
 }
 
 bool EditorWindow(const char* name) {
@@ -516,38 +516,3 @@ void render_notify() {
   //ImGui::notifications.~vector();
 }
 
-#define MAX_FONT_PATH 200
-#define FONT_NAME_LEN 8
-static bool path_calculated = false;
-
-const char* get_font_path() {
-
-  static char path[MAX_FONT_PATH];
-
-  const char* this_path = __FILE__;
-  const char* font_name = "font.ttf";
-
-  if (path_calculated) {
-    return path;
-  }
-
-  int len = 0;
-  for (const char* i = this_path; *i != '\0'; i++, len++) {
-    path[len] = *i;
-  }
-  path[len] = '\0';
-
-  for (int start = len; start > 0; start--) {
-    if (path[start] == '\\' || path[start] == '/') {
-      start++;
-      for (int i = 0; i < FONT_NAME_LEN; i++, start++) {
-        path[start] = font_name[i];
-      }
-      path[start] = '\0';
-      break;
-    }
-  }
-
-  path_calculated = true;
-  return path;
-}

@@ -5,9 +5,10 @@
 class imGuiDefaultApp {
 
   bool initialized = true;
-  time_t fdur = 1000 / 60.f;
+  time_t fdur = time_t(1000 / 60.f);
   struct GLFWwindow* window;
 
+public:
   imGuiDefaultApp();
   virtual bool mainloop_tick();
   void mainloop();
