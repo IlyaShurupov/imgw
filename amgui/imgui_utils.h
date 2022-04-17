@@ -2,6 +2,10 @@
 
 #include "imgui.h"
 
+void ImGui_default_init_all(struct GLFWwindow* window);
+void ImGui_FrameStart();
+void ImGui_FrameEnd();
+
 class imGuiDefaultApp {
 
   bool initialized = true;

@@ -1,6 +1,10 @@
 #pragma once
 
 #include "imgui_utils.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+#include "imgui_utils.h"
 
 #include "imgui_notify.h"
 #include "tahoma.h" // <-- Required font!
@@ -516,3 +520,38 @@ void render_notify() {
   //ImGui::notifications.~vector();
 }
 
+
+void ImGui_default_init_all(GLFWwindow* window) {
+  // Setup Dear ImGui context
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO();
+  (void)io;
+  // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable
+  // Keyboard Controls io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; //
+  // Enable Gamepad Controls
+  ImGui::StyleColorsDark();
+
+  ImGui_ImplGlfw_InitForOpenGL(window, true);
+  ImGui_ImplOpenGL3_Init("#version 130");
+
+  // ImPlot::CreateContext();
+  ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+  ImFont* font1 = io.Fonts->AddFontFromFileTTF(get_font_path(), 18.0f);
+
+  init_notify();
+  apply_style();
+}
+
+void ImGui_FrameStart() {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+}
+
+void ImGui_FrameEnd() {
+  render_notify();
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
