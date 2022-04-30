@@ -1,0 +1,6 @@
+[submodule "ext/imgui"]
+	path = ext/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "ext/imgui-notify"]
+	path = ext/imgui-notify
+	url = https://github.com/patrickcjk/imgui-notify.git

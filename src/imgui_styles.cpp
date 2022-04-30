@@ -1,11 +1,12 @@
 
-#include "DebugGui.h"
+#include "ImGuiClass.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
 using namespace std;
+using namespace ImGui;
 
 struct inactive_col {
 	int r = 0;
@@ -101,7 +102,7 @@ ImVec4 gui_col(int range, int child_range, bool active = false, bool child = fal
 	return ImVec4((base_col + ic.r) / 255.f, (base_col + ic.g) / 255.f, (base_col + ic.b) / 255.f, a);
 }
 
-void DebugGui::StyleEditor() {
+void DefaultWraper::StyleEditor() {
 	ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x * 0.3f);
 	ImGui::SliderInt("Black", &black, 0, 255); ImGui::SameLine(); ImGui::SliderInt("BStep", &black_step, 0, 100);
 	ImGui::SliderInt("Gray", &gray, 0, 255); ImGui::SameLine(); ImGui::SliderInt("GStep", &gray_step, 0, 100);
@@ -118,7 +119,7 @@ void DebugGui::StyleEditor() {
 	}
 }
 
-void DebugGui::apply_style() {
+void DefaultWraper::apply_style() {
 
 	if (first_init) {
 		StyleEditorLoad(style_save_path);

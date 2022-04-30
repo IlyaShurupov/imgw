@@ -1,95 +1,101 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="src">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="inc">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{bcaa3f07-96f4-43fe-85d7-8423a1f6dc13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rsc">
+      <UniqueIdentifier>{6a697e84-803c-4c1f-8703-96610eac4de9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\imgui\imconfig.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\imgui.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\imgui_internal.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\backends\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\backends\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\imgui\backends\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\implot\implot.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="..\..\implot\implot_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugGui.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="font_awesome_5.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="fa_solid_900.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="imgui_notify.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
     </ClInclude>
     <ClInclude Include="tahoma.h">
-      <Filter>Header Files</Filter>
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiClass.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\implot\implot.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\implot\implot_items.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>rsc</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_utils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ImGuiClass.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="imgui_styles.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

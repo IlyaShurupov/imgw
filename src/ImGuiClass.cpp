@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DebugGui.h"
+#include "ImGuiClass.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
@@ -8,6 +8,8 @@
 #include "tahoma.h" // <-- Required font!
 
 #include "implot.h"
+
+using namespace ImGui;
 
 const char* get_font_path() {
 	static bool path_calculated = false;
@@ -42,8 +44,7 @@ const char* get_font_path() {
 	return path;
 }
 
-
-DebugGui::DebugGui(struct GLFWwindow* window) {
+void DefaultWraper::init(ogl::window* window) {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -54,7 +55,7 @@ DebugGui::DebugGui(struct GLFWwindow* window) {
 	// Enable Gamepad Controls
 	ImGui::StyleColorsDark();
 
-	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplGlfw_InitForOpenGL(window->winp, true);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
 	// ImPlot::CreateContext();
@@ -75,15 +76,21 @@ DebugGui::DebugGui(struct GLFWwindow* window) {
 	//ImGui::MergeIconsWithLatestFont(16.f, false);
 
 	ImPlot::CreateContext();
+
+	winp = window;
 }
 
-void DebugGui::frame_start() {
+DefaultWraper::DefaultWraper() {}
+
+void DefaultWraper::frame_start() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
+	draw_list = ImGui::GetForegroundDrawList();
 }
 
-void DebugGui::WindowMain(const char* name) {
+void DefaultWraper::WindowMain(const char* name) {
 	bool p_open = 1;
 
 	static bool opt_fullscreen = true;
@@ -139,12 +146,12 @@ void DebugGui::WindowMain(const char* name) {
 	ImGui::End();
 }
 
-bool DebugGui::WindowEditor(const char* name) {
+bool DefaultWraper::WindowEditor(const char* name) {
 	bool open;
 	return ImGui::Begin(name, &open, ImGuiWindowFlags_NoCollapse);
 }
 
-bool DebugGui::SubMenuBegin(const char* desc, int level) {
+bool DefaultWraper::SubMenuBegin(const char* desc, int level) {
 	if (level == 1) {
 		ImGui::Separator();
 	}
@@ -155,16 +162,16 @@ bool DebugGui::SubMenuBegin(const char* desc, int level) {
 	return false;
 }
 
-void DebugGui::SubMenuEnd(int level) {
+void DefaultWraper::SubMenuEnd(int level) {
 	ImGui::TreePop();
 	ImGui::Indent();
 }
 
-void DebugGui::Notify(const char* desc, int codec) {
+void DefaultWraper::Notify(const char* desc, int codec) {
 	ImGui::InsertNotification({codec, 3000, desc});
 }
 
-void DebugGui::ToolTip(const char* desc) {
+void DefaultWraper::ToolTip(const char* desc) {
 	ImGui::SameLine();
 	ImGui::TextDisabled("*");
 	if (ImGui::IsItemHovered()) {
@@ -185,17 +192,160 @@ void render_notify() {
 	//ImGui::notifications.~vector();
 }
 
-void DebugGui::frame_end() {
+void DefaultWraper::frame_end() {
 	render_notify();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-DebugGui::~DebugGui() {
+void DefaultWraper::DrawRectF(rectf rect, rgba col, halnf roundness) {
+	rect.invy(winp->size.y);
+	draw_list->AddRectFilled(ImVec2(rect.x, rect.y), ImVec2(rect.x + rect.z, rect.y + rect.w),
+		ImColor(col.r, col.g, col.b, col.a), roundness);
+}
+
+void DefaultWraper::DrawCircle(vec2f center, halnf radius, rgba col, halnf thickness) {
+	center.y = winp->size.y - center.y;
+	draw_list->AddCircle(ImVec2(center.x, center.y), radius, ImColor(col.r, col.g, col.b, col.a), 32, thickness);
+}
+
+void DefaultWraper::DrawCircleF(vec2f center, halnf radius, rgba col) {
+	center.y = winp->size.y - center.y;
+	draw_list->AddCircleFilled(ImVec2(center.x, center.y), radius, ImColor(col.r, col.g, col.b, col.a), 32);
+}
+
+void DefaultWraper::DrawLine(vec2f p1, vec2f p2, rgba col, halnf thickness) {
+	p1.y = winp->size.y - p1.y;
+	p2.y = winp->size.y - p2.y;
+
+	draw_list->AddLine(ImVec2(p1.x, p1.y), ImVec2(p2.x, p2.y), ImColor(col.r, col.g, col.b, col.a), thickness);
+}
+
+void ImGui::DefaultWraper::Texture(rectf rec, const char* TextureId, GLuint buff) {
+	GLuint tex = get_tex(TextureId);
+	if (tex) {
+		winp->set_viewport(rec);
+		draw_texture(buff, tex);
+	}
+}
+
+void ImGui::DefaultWraper::DrawTrigF(vec2f p1, vec2f p2, vec2f p3, rgba col) {
+	p1.y = winp->size.y - p1.y;
+	p2.y = winp->size.y - p2.y;
+	p3.y = winp->size.y - p3.y;
+
+	draw_list->AddTriangleFilled(ImVec2(p1.x, p1.y), ImVec2(p2.x, p2.y), ImVec2(p3.x, p3.y), ImColor(col.r, col.g, col.b, col.a));
+}
+
+DefaultWraper::~DefaultWraper() {
 	ImPlot::DestroyContext();
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
+}
+
+// Examples
+static void CustomRend() {
+	ImDrawList* draw_list = ImGui::GetForegroundDrawList();
+	draw_list->AddRectFilled(ImVec2(2, 2), ImVec2(32, 32), ImColor(ImVec4(1.0f, 1.0f, 0.4f, 1.0f)), 10.0f);
+
+	return;
+
+	static float sz = 36.0f;
+	static float thickness = 4.0f;
+	static ImVec4 col = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
+
+	{
+		const ImVec2 p = ImVec2(0, 0);
+		const ImU32 col32 = ImColor(col);
+		float x = p.x + 4.0f, y = p.y + 4.0f, spacing = 8.0f;
+
+		//float th = thickness;
+		//draw_list->AddBezierCurve(ImVec2(x, y), ImVec2(x + sz * 1.3f, y + sz * 0.3f), ImVec2(x + sz - sz * 1.3f, y + sz - sz * 0.3f), ImVec2(x + sz, y + sz), col32, th);
+		//x = p.x + 4;
+		//y += sz + spacing;
+
+		draw_list->AddCircle(ImVec2(x + sz * 0.5f, y + sz * 0.5f), sz * 0.5f, col32, 32); x += sz + spacing;      // Circle
+		//draw_list->AddCircleFilled(ImVec2(x + sz * 0.5f, y + sz * 0.5f), sz * 0.5f, col32, 32); x += sz + spacing;      // Circle
+		draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + sz, y + sz), col32, 10.0f); x += sz + spacing;
+
+		//draw_list->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x + sz, y + sz), IM_COL32(0, 0, 0, 255), IM_COL32(255, 0, 0, 255), IM_COL32(255, 255, 0, 255), IM_COL32(0, 255, 0, 255));
+
+	}
+}
+
+
+CompleteApp::CompleteApp() {
+	init(&window);
+
+	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
+}
+
+CompleteApp::CompleteApp(const vec2f& rect, alni window_params) : window(rect, window_params) {
+	init(&window);
+	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
+}
+
+void CompleteApp::Run() {
+
+	while (!window.CloseSignal()) {
+
+		window.begin_draw(need_update);
+
+		if (window.new_frame) {
+			if (clear_frames) {
+				window.clear();
+			}
+			window.reset_viewport();
+			frame_start();
+		}
+
+		// Main Proc
+		MainProcTick();
+
+		if (window.draw_event) {
+
+			if (main_window) {
+				WindowMain("MainWindow");
+			}
+
+			if (debug_info) {
+				draw_debug_info();
+			}
+
+			// Main Draw
+			MainDrawTick();
+
+			gui_is_active = ImGui::GetIO().WantCaptureMouse;
+
+			frame_end();
+		}
+
+		if (window.SpecialKey()) {
+			debug_info = !debug_info;
+		}
+
+		window.end_draw(whait_for_event && (!need_update));
+
+		if (need_update) {
+			need_update = false;
+		}
+
+		if (window.draw_event) {
+			window_fps.update(false);
+		}
+
+		fps.update(false);
+	}
+}
+
+void CompleteApp::draw_debug_info() {
+	WindowEditor("Debug Info");
+
+	Text("InputProc FPS: %i", fps.fps);
+	Text("WindowDraw Fps: %i", window_fps.fps);
+
+	End();
 }
