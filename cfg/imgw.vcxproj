@@ -19,34 +19,42 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_glfw.h" />
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_opengl3.h" />
-    <ClInclude Include="..\..\imgui\backends\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="..\..\imgui\imconfig.h" />
-    <ClInclude Include="..\..\imgui\imgui.h" />
-    <ClInclude Include="..\..\imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\..\imgui\imstb_textedit.h" />
-    <ClInclude Include="..\..\implot\implot.h" />
-    <ClInclude Include="..\..\implot\implot_internal.h" />
-    <ClInclude Include="fa_solid_900.h" />
-    <ClInclude Include="font_awesome_5.h" />
-    <ClInclude Include="imgui_notify.h" />
-    <ClInclude Include="ImGuiClass.h" />
-    <ClInclude Include="tahoma.h" />
+    <ClInclude Include="..\ext\imgui-notify\fa_solid_900.h" />
+    <ClInclude Include="..\ext\imgui-notify\font_awesome_5.h" />
+    <ClInclude Include="..\ext\imgui-notify\imgui_notify.h" />
+    <ClInclude Include="..\ext\imgui-notify\tahoma.h" />
+    <ClInclude Include="..\ext\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="..\ext\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="..\ext\imgui\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="..\ext\imgui\imconfig.h" />
+    <ClInclude Include="..\ext\imgui\imgui.h" />
+    <ClInclude Include="..\ext\imgui\imgui_internal.h" />
+    <ClInclude Include="..\ext\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\ext\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\ext\imgui\imstb_truetype.h" />
+    <ClInclude Include="..\ext\implot\implot.h" />
+    <ClInclude Include="..\ext\implot\implot_internal.h" />
+    <ClInclude Include="..\inc\ImGuiClass.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_glfw.cpp" />
-    <ClCompile Include="..\..\imgui\backends\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\imgui\imgui.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="..\..\implot\implot.cpp" />
-    <ClCompile Include="..\..\implot\implot_items.cpp" />
-    <ClCompile Include="imgui_styles.cpp" />
-    <ClCompile Include="ImGuiClass.cpp" />
+    <ClCompile Include="..\ext\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\ext\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="..\ext\imgui\imgui.cpp" />
+    <ClCompile Include="..\ext\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\ext\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\ext\imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\ext\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\ext\implot\implot.cpp" />
+    <ClCompile Include="..\ext\implot\implot_items.cpp" />
+    <ClCompile Include="..\src\ImGuiClass.cpp" />
+    <ClCompile Include="..\src\imgui_styles.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ext\imgui-notify\LICENSE" />
+    <None Include="..\ext\imgui-notify\README.md" />
+    <None Include="..\ext\implot\LICENSE" />
+    <None Include="..\ext\implot\README.md" />
+    <None Include="..\ext\implot\TODO.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -54,7 +62,7 @@
     <ProjectGuid>{6e225d12-1c66-4a38-bee5-71c4dbec0521}</ProjectGuid>
     <RootNamespace>amgui</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>imgui</ProjectName>
+    <ProjectName>imgw</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -129,7 +137,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -148,7 +156,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -167,7 +175,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
@@ -190,7 +198,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\imgui;$(ProjectDir)..\..\imgui\backends;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\additional;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

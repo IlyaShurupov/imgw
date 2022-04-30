@@ -1,10 +1,13 @@
 #pragma once
 
 #include "ImGuiClass.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
+
+#pragma warning(disable:4174)
 #include "imgui_notify.h"
+#pragma warning(default:4174)
 #include "tahoma.h" // <-- Required font!
 
 #include "implot.h"
