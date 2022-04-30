@@ -4,13 +4,14 @@
 #include "backends/imgui_impl_glfw.h"
 #include "backends/imgui_impl_opengl3.h"
 
-
 #pragma warning(disable:4174)
 #include "imgui_notify.h"
 #pragma warning(default:4174)
 #include "tahoma.h" // <-- Required font!
 
 #include "implot.h"
+
+#include "strings.h"
 
 using namespace ImGui;
 
@@ -93,7 +94,7 @@ void DefaultWraper::frame_start() {
 	draw_list = ImGui::GetForegroundDrawList();
 }
 
-void DefaultWraper::WindowMain(const char* name) {
+void ImGui::WindowMain(const char* name) {
 	bool p_open = 1;
 
 	static bool opt_fullscreen = true;
@@ -149,12 +150,12 @@ void DefaultWraper::WindowMain(const char* name) {
 	ImGui::End();
 }
 
-bool DefaultWraper::WindowEditor(const char* name) {
+bool ImGui::WindowEditor(const char* name) {
 	bool open;
 	return ImGui::Begin(name, &open, ImGuiWindowFlags_NoCollapse);
 }
 
-bool DefaultWraper::SubMenuBegin(const char* desc, int level) {
+bool ImGui::SubMenuBegin(const char* desc, int level) {
 	if (level == 1) {
 		ImGui::Separator();
 	}
@@ -165,16 +166,16 @@ bool DefaultWraper::SubMenuBegin(const char* desc, int level) {
 	return false;
 }
 
-void DefaultWraper::SubMenuEnd(int level) {
+void ImGui::SubMenuEnd(int level) {
 	ImGui::TreePop();
 	ImGui::Indent();
 }
 
-void DefaultWraper::Notify(const char* desc, int codec) {
+void ImGui::Notify(const char* desc, int codec) {
 	ImGui::InsertNotification({codec, 3000, desc});
 }
 
-void DefaultWraper::ToolTip(const char* desc) {
+void ImGui::ToolTip(const char* desc) {
 	ImGui::SameLine();
 	ImGui::TextDisabled("*");
 	if (ImGui::IsItemHovered()) {
@@ -247,36 +248,6 @@ DefaultWraper::~DefaultWraper() {
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-}
-
-// Examples
-static void CustomRend() {
-	ImDrawList* draw_list = ImGui::GetForegroundDrawList();
-	draw_list->AddRectFilled(ImVec2(2, 2), ImVec2(32, 32), ImColor(ImVec4(1.0f, 1.0f, 0.4f, 1.0f)), 10.0f);
-
-	return;
-
-	static float sz = 36.0f;
-	static float thickness = 4.0f;
-	static ImVec4 col = ImVec4(1.0f, 1.0f, 0.4f, 1.0f);
-
-	{
-		const ImVec2 p = ImVec2(0, 0);
-		const ImU32 col32 = ImColor(col);
-		float x = p.x + 4.0f, y = p.y + 4.0f, spacing = 8.0f;
-
-		//float th = thickness;
-		//draw_list->AddBezierCurve(ImVec2(x, y), ImVec2(x + sz * 1.3f, y + sz * 0.3f), ImVec2(x + sz - sz * 1.3f, y + sz - sz * 0.3f), ImVec2(x + sz, y + sz), col32, th);
-		//x = p.x + 4;
-		//y += sz + spacing;
-
-		draw_list->AddCircle(ImVec2(x + sz * 0.5f, y + sz * 0.5f), sz * 0.5f, col32, 32); x += sz + spacing;      // Circle
-		//draw_list->AddCircleFilled(ImVec2(x + sz * 0.5f, y + sz * 0.5f), sz * 0.5f, col32, 32); x += sz + spacing;      // Circle
-		draw_list->AddRectFilled(ImVec2(x, y), ImVec2(x + sz, y + sz), col32, 10.0f); x += sz + spacing;
-
-		//draw_list->AddRectFilledMultiColor(ImVec2(x, y), ImVec2(x + sz, y + sz), IM_COL32(0, 0, 0, 255), IM_COL32(255, 0, 0, 255), IM_COL32(255, 255, 0, 255), IM_COL32(0, 255, 0, 255));
-
-	}
 }
 
 

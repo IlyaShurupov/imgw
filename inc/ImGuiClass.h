@@ -8,6 +8,18 @@
 
 namespace ImGui {
 
+	void StyleEditor();
+
+	bool WindowEditor(const char* name);
+	bool SubMenuBegin(const char* desc, int level);
+	void SubMenuEnd(int level);
+	void WindowMain(const char* name);
+
+	void Notify(const char* desc, int codec = 0);
+	void ToolTip(const char* desc);
+
+	void apply_style();
+
 	class DefaultWraper {
 
 		ImDrawList* draw_list = NULL;
@@ -19,17 +31,6 @@ namespace ImGui {
 		void init(ogl::window* window);
 
 		void frame_start();
-
-		void WindowMain(const char* name);
-		bool WindowEditor(const char* name);
-
-		void StyleEditor();
-
-		bool SubMenuBegin(const char* desc, int level);
-		void SubMenuEnd(int level);
-
-		void Notify(const char* desc, int codec = 0);
-		void ToolTip(const char* desc);
 
 		void frame_end();
 
@@ -43,8 +44,6 @@ namespace ImGui {
 		void Texture(rectf rec, const char* TextureId, GLuint buff = 0);
 
 		private:
-
-		void apply_style();
 	};
 
 	class CompleteApp : public DefaultWraper {

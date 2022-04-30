@@ -86,6 +86,9 @@
     <ClInclude Include="..\ext\implot\implot_internal.h">
       <Filter>imgui\ext\plot</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\ImGuiObjectEditor.h">
+      <Filter>utils\inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\imgui_styles.cpp">
@@ -120,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="..\ext\implot\implot_items.cpp">
       <Filter>imgui\ext\plot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ImGuiObjectEditor.cpp">
+      <Filter>utils\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
