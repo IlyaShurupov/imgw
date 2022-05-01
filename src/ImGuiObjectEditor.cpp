@@ -7,13 +7,6 @@
 
 using namespace ImGui;
 
-void ImGuiObjectEditor::oedior_init(DictObject* rootp, objects_api* ohp, ogl::window* window) {
-	oh = ohp;
-	root = rootp;
-	active = root;
-	path.push({active , "dict 'root'"});
-}
-
 object_path nullo_view(Object* in, Object*& clipboard, objects_api* oh) {
 	ImGui::Text("Null Object.");
 	return object_path();
@@ -91,7 +84,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 			if (ImGui::InputTextEx(" ", "new name", name, 100, {140 , 30}, ImGuiInputTextFlags_EnterReturnsTrue)) {
 				alni idx = active->items.Presents(name);
 				if (idx != -1) {
-					//gui.Notify("Object with such name Already Exists");
+					Notify("Object with such name Already Exists");
 				} else {
 					active->items.Remove(childo->key);
 					active->items.Put(string(name).capture(), name_parent);
@@ -321,7 +314,7 @@ void ImGuiObjectEditor::oexplorer() {
 	//ImGui::Text("View Path: "); ImGui::SameLine();
 	ImGui::BeginChild("child_path", {ImGui::GetWindowContentRegionWidth(), 45}, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_HorizontalScrollbar);
 	stack<object_path*> rev_path;
-	for (auto childo = path.last; childo; childo = childo->prev) {
+	for (auto childo = view_path.last; childo; childo = childo->prev) {
 		rev_path.push(&childo->data);
 	}
 	alni idx = 0;
@@ -346,8 +339,8 @@ void ImGuiObjectEditor::oexplorer() {
 			}
 
 			if (ImGui::Selectable("Instantiate  ")) {
-				clipboard = oh->create(curretn_object->type->name.cstr());
-				oh->copy(clipboard, curretn_object);
+				clipboard = NDO->create(curretn_object->type->name.cstr());
+				NDO->copy(clipboard, curretn_object);
 				Notify("Object copied to clipboard");
 			}
 
@@ -360,12 +353,12 @@ void ImGuiObjectEditor::oexplorer() {
 			bool load_object = ImGui::Selectable("Load Object");
 
 			if (save_object) {
-				oh->save(curretn_object, path_str);
+				NDO->save(curretn_object, path_str);
 				Notify("Object saved");
 			}
 
 			if (load_object) {
-				Object* loadedo = oh->load(path_str);
+				Object* loadedo = NDO->load(path_str);
 				if (loadedo) {
 					clipboard = loadedo;
 					Notify("Object copied to clipboard");
@@ -378,8 +371,8 @@ void ImGuiObjectEditor::oexplorer() {
 		}
 
 		if (go_back) {
-			while (&path.last->data != childo->data) {
-				path.pop();
+			while (&view_path.last->data != childo->data) {
+				view_path.pop();
 			}
 			active = childo->data->obj;
 			ImGui::EndChild();
@@ -393,26 +386,26 @@ void ImGuiObjectEditor::oexplorer() {
 	ImGui::Separator();
 	object_path new_active;
 	if (active->type->name == "null") {
-		new_active = nullo_view(active, clipboard, oh);
+		new_active = nullo_view(active, clipboard, NDO);
 	} else if (active->type->name == "link") {
-		new_active = linko_view((LinkObject*) active, clipboard, oh);
+		new_active = linko_view((LinkObject*) active, clipboard, NDO);
 	} else if (active->type->name == "int") {
-		new_active = into_view((IntObject*) active, clipboard, oh);
+		new_active = into_view((IntObject*) active, clipboard, NDO);
 	} else if (active->type->name == "float") {
-		new_active = floato_view(active, clipboard, oh);
+		new_active = floato_view(active, clipboard, NDO);
 	} else if (active->type->name == "str") {
-		new_active = stringo_view((StringObject*) active, clipboard, oh);
+		new_active = stringo_view((StringObject*) active, clipboard, NDO);
 	} else if (active->type->name == "list") {
-		new_active = listo_view((ListObject*) active, clipboard, oh);
+		new_active = listo_view((ListObject*) active, clipboard, NDO);
 	} else if (active->type->name == "dict") {
-		new_active = dicto_view((DictObject*) active, clipboard, oh);
+		new_active = dicto_view((DictObject*) active, clipboard, NDO);
 	} else {
-		ImGui::Text("Unknown Type");
+		ImGui::Text("Preview is Unavaliable");
 	}
 
 	if (new_active != NULL) {
 		active = new_active.obj;
-		path.push(new_active);
+		view_path.push(new_active);
 	}
 }
 

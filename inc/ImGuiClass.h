@@ -19,6 +19,7 @@ namespace ImGui {
 	void ToolTip(const char* desc);
 
 	void apply_style();
+	void StyleEditorLoad(const char* name);
 
 	class DefaultWraper {
 
@@ -41,6 +42,7 @@ namespace ImGui {
 		void DrawCircleF(vec2f center, halnf radius, rgba col);
 		void DrawTrigF(vec2f p1, vec2f p2, vec2f p3, rgba col);
 		void DrawLine(vec2f p1, vec2f p2, rgba col, halnf thickness);
+		void DrawTextR(rectf rec, const char* text, rgba col);
 		void Texture(rectf rec, const char* TextureId, GLuint buff = 0);
 
 		private:
@@ -65,7 +67,7 @@ namespace ImGui {
 		halni max_proc_fps = 100;
 
 		CompleteApp();
-		CompleteApp(const vec2f& rect, alni window_params = 0);
+		CompleteApp(const vec2f& rect, alni window_params = 0, const char* style = 0);
 
 		virtual void MainProcTick() {}
 		virtual void MainDrawTick() { Text("Hello"); }

@@ -28,19 +28,64 @@ namespace ImGui {
 
 	struct ImGuiObjectEditor {
 
-		objects_api* oh;
-		DictObject* root;
+		stack<object_path> view_path;
 
-		Object* active;
-		stack<object_path> path;
+		DictObject* root = NULL;
+		Object* active = NULL;
+
 		Object* clipboard = NULL;
+		string save_path;
 
-		void oedior_init(DictObject* root, objects_api* oh, ogl::window* window);
+		ImGuiObjectEditor() {
+			assert(NDO && "Objects library is not initialized");
+			root = (DictObject*) NDO->create("dict");
+			default_init();
+		}
+
+		ImGuiObjectEditor(string path) {
+			assert(NDO && "Objects library is not initialized");
+			load(path);
+			if (!root) {
+				root = (DictObject*) NDO->create("dict");
+			}
+			default_init();
+			save_path = path;
+		}
+
+		void default_init() {
+			active = root;
+			view_path.push({active , "dict 'root'"});
+		}
+
+		void cd(Object* child, const char* name) {
+			active = child;
+			view_path.push({active , name});
+		}
+
+		void save(string path) {
+			if (root) {
+				NDO->save(root, path);
+			}
+		}
+		void load(string path) {
+			Object* obj = NDO->load(path);
+			if (!obj || obj->type->name != "dict") {
+				NDO->destroy(obj);
+				return;
+			}
+			root = NDO_CAST(DictObject, obj);
+		}
 
 		void Draw();
-
 		void oexplorer();
 		void oproperties(const ObjectType*);
+
+		~ImGuiObjectEditor() {
+			if (save_path != " ") {
+				save(save_path);
+			}
+			NDO->destroy(root);
+		}
 	};
 };
 #endif

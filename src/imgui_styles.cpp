@@ -56,7 +56,7 @@ void StyleEditorSave(const char* name) {
 	fout.close();
 }
 
-void StyleEditorLoad(const char* name) {
+void ImGui::StyleEditorLoad(const char* name) {
 	ifstream fin;
 	string line;
 	fin.open(name);

@@ -225,6 +225,11 @@ void DefaultWraper::DrawLine(vec2f p1, vec2f p2, rgba col, halnf thickness) {
 	draw_list->AddLine(ImVec2(p1.x, p1.y), ImVec2(p2.x, p2.y), ImColor(col.r, col.g, col.b, col.a), thickness);
 }
 
+void ImGui::DefaultWraper::DrawTextR(rectf rec, const char* text, rgba col) {
+	rec.invy(winp->size.y);
+	draw_list->AddText(ImVec2(rec.pos.x, rec.pos.y), ImColor(col.r, col.g, col.b, col.a), text);
+}
+
 void ImGui::DefaultWraper::Texture(rectf rec, const char* TextureId, GLuint buff) {
 	GLuint tex = get_tex(TextureId);
 	if (tex) {
@@ -257,9 +262,12 @@ CompleteApp::CompleteApp() {
 	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
 }
 
-CompleteApp::CompleteApp(const vec2f& rect, alni window_params) : window(rect, window_params) {
+CompleteApp::CompleteApp(const vec2f& rect, alni window_params, const char* style) : window(rect, window_params) {
 	init(&window);
 	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
+
+	if (style) StyleEditorLoad(style);
+	apply_style();
 }
 
 void CompleteApp::Run() {
