@@ -10,10 +10,17 @@
 #include "tahoma.h" // <-- Required font!
 
 #include "implot.h"
+#include "imgui_internal.h"
 
+#include "typelist.h"
 #include "strings.h"
+#include "stack.h"
+#include "map.h"
+#include "npple.h"
 
 using namespace ImGui;
+
+int ImGui::frame_window = (ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoDecoration);
 
 const char* get_font_path() {
 	static bool path_calculated = false;
@@ -330,4 +337,61 @@ void CompleteApp::draw_debug_info() {
 	Text("WindowDraw Fps: %i", window_fps.fps);
 
 	End();
+}
+
+ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, vec2f size, vec2f pos_p, ImGuiPopupFlags popup_flags) {
+	ImGui::ImGuiPopupData out;
+	out.ishovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup);
+
+	if (out.ishovered) {
+		ImVec2 pos;
+		
+		if (pos_p == vec2f(-1)) {
+			pos = GImGui->CurrentWindow->DC.CursorPos;
+		} else {
+			pos.x = pos_p.x;
+			pos.y = pos_p.y;
+		}
+
+		ImGui::SetNextWindowPos(pos);
+		out.p1 = {pos.x, pos.y};
+
+		ImGui::OpenPopup(str_id);
+
+		out.p2 = out.p1;
+		out.p2.x += ImGui::GetWindowWidth();
+	}
+
+	if (BeginPopup(str_id)) {
+		out.opened = true;
+
+		ImGui::SetNextItemWidth(size.x);
+
+		auto pos = GetWindowPos();
+		out.p1 = {pos.x, pos.y};
+		out.p2 = out.p1;
+		out.p2.x += ImGui::GetWindowWidth();
+
+	}
+	return out;
+}
+
+void ImGui::HoverPopupEnd(ImGui::ImGuiPopupData& in) {
+
+	if (!in.opened) {
+		return;
+	}
+
+	in.ishovered |= IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_ChildWindows);
+
+	vec2f mousepos = { ImGui::GetMousePos().x, ImGui::GetMousePos().y };
+	halnf tollerance = 10;
+	rectf tollerace_rect = rectf(vec2f(in.p1.x, in.p1.y - tollerance), vec2f(in.p2.x - in.p1.x, tollerance * 2.f));
+	bool is_tollerance = tollerace_rect.inside(mousepos);
+
+	if (!(in.ishovered || is_tollerance)) {
+		CloseCurrentPopup();
+	}
+
+	EndPopup();
 }

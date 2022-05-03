@@ -1,12 +1,15 @@
 #pragma once
 
 #include "imgui.h"
+#include "ImGuiTypesConversions.h"
 
 #include "gl.h"
 #include "glutils.h"
 #include "window.h"
 
 namespace ImGui {
+
+	extern int frame_window;
 
 	void StyleEditor();
 
@@ -20,6 +23,19 @@ namespace ImGui {
 
 	void apply_style();
 	void StyleEditorLoad(const char* name);
+
+	struct ImGuiPopupData {
+		bool opened = false;
+		bool ishovered = false;
+		vec2f p1 = 0;
+		vec2f p2 = 0;
+		operator bool() {
+			return opened;
+		}
+	};
+
+	ImGuiPopupData HoverPopupBegin(const char* id, vec2f size = 200, vec2f pos = -1, ImGuiPopupFlags flags = 0);
+	void HoverPopupEnd(ImGuiPopupData& in);
 
 	class DefaultWraper {
 

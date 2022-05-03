@@ -133,7 +133,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 			string name_base = string("clipboard ") + clipboard->type->name + string(" ");
 			string name_out = name_base;
 
-			while (active->items.Presents(name_out) != -1) {
+			while (active->items.Presents(name_out)) {
 				name_out = name_base + string(idx);
 				idx++;
 			}
@@ -157,7 +157,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 					string name_base = string("new ") + newo->type->name + string(" ");
 					string name_out = name_base;
 
-					while (active->items.Presents(name_out) != -1) {
+					while (active->items.Presents(name_out)) {
 						name_out = name_base + string(idx);
 						idx++;
 					}
