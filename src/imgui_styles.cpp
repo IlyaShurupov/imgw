@@ -189,7 +189,7 @@ void ImGui::apply_style() {
 	//style->Colors[ImGuiCol_CloseButton] = ImVec4(0.40f, 0.39f, 0.38f, 0.16f);
 	//style->Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.40f, 0.39f, 0.38f, 0.39f);
 	//style->Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.40f, 0.39f, 0.38f, 1.00f);
-	style->Colors[ImGuiCol_PlotLines] = gui_col(3, 3);
+	style->Colors[ImGuiCol_PlotLines] = gui_col(1, 3);
 	style->Colors[ImGuiCol_PlotLinesHovered] = gui_col(3, 3);
 	style->Colors[ImGuiCol_PlotHistogram] = gui_col(3, 3);
 	style->Colors[ImGuiCol_PlotHistogramHovered] = gui_col(3, 3);

@@ -7,6 +7,8 @@
 #include "glutils.h"
 #include "window.h"
 
+#include "../ext/curves/curve_editor.h"
+
 namespace ImGui {
 
 	extern int frame_window;

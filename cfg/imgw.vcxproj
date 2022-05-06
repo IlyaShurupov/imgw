@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ext\curves\curve_editor.h" />
     <ClInclude Include="..\ext\imgui-notify\fa_solid_900.h" />
     <ClInclude Include="..\ext\imgui-notify\font_awesome_5.h" />
     <ClInclude Include="..\ext\imgui-notify\imgui_notify.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\inc\ImGuiObjectEditor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\ext\curves\curve_editor.cpp" />
     <ClCompile Include="..\ext\imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="..\ext\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\ext\imgui\imgui.cpp" />
@@ -165,7 +167,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\ext\curves\;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -184,7 +186,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\ext\curves\;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -203,7 +205,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\ext\curves\;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
@@ -226,7 +228,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\inc;$(ProjectDir)..\ext\imgui;$(ProjectDir)..\..\glew\include;$(ProjectDir)..\..\glfw\include;$(ProjectDir)..\ext\implot;$(ProjectDir)..\ext\imgui-notify;$(ProjectDir)..\ext\curves\;$(ProjectDir)..\..\implot\;$(ProjectDir)..\..\types\modules\glw\inc;$(ProjectDir)..\..\types\modules\common\inc;$(ProjectDir)..\..\types\modules\allocator\inc;$(ProjectDir)..\..\types\modules\container\inc;$(ProjectDir)..\..\types\modules\string\inc;$(ProjectDir)..\..\types\modules\filesystem\inc;$(ProjectDir)..\..\types\modules\math\inc;$(ProjectDir)..\..\objects\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

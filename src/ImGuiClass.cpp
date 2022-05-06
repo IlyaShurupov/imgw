@@ -167,7 +167,8 @@ bool ImGui::SubMenuBegin(const char* desc, int level) {
 		ImGui::Separator();
 	}
 	if (ImGui::TreeNode(desc)) {
-		ImGui::Unindent();
+		GImGui->Style.IndentSpacing = 6;
+		//ImGui::Unindent();
 		return true;
 	}
 	return false;
@@ -175,7 +176,7 @@ bool ImGui::SubMenuBegin(const char* desc, int level) {
 
 void ImGui::SubMenuEnd(int level) {
 	ImGui::TreePop();
-	ImGui::Indent();
+	//ImGui::Indent();
 }
 
 void ImGui::Notify(const char* desc, int codec) {
@@ -316,11 +317,17 @@ void CompleteApp::Run() {
 			debug_info = !debug_info;
 		}
 
-		window.end_draw(whait_for_event && (!need_update));
 
-		if (need_update) {
+		static bool prev_state = 0;
+		bool state = glfwGetMouseButton(window.winp, GLFW_MOUSE_BUTTON_1) == GLFW_PRESS;
+		if (state == prev_state) {
 			need_update = false;
+		} else {
+			prev_state = state;
+			need_update = true;
 		}
+
+		window.end_draw(whait_for_event && (!need_update));
 
 		if (window.draw_event) {
 			window_fps.update(false);
@@ -362,7 +369,7 @@ ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, vec2f size, vec
 		out.p2.x += ImGui::GetWindowWidth();
 	}
 
-	if (BeginPopup(str_id)) {
+	if (BeginPopup(str_id, ImGuiWindowFlags_NoMove)) {
 		out.opened = true;
 
 		ImGui::SetNextItemWidth(size.x);

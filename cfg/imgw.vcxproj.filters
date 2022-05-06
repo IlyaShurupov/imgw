@@ -36,6 +36,9 @@
     <Filter Include="imgui\ext\plot">
       <UniqueIdentifier>{77e051f9-4f61-4d79-808a-203f7d556588}</UniqueIdentifier>
     </Filter>
+    <Filter Include="imgui\ext\curve">
+      <UniqueIdentifier>{6598a17b-b024-4ad3-b874-56a77de1a952}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\inc\ImGuiClass.h">
@@ -89,6 +92,9 @@
     <ClInclude Include="..\inc\ImGuiObjectEditor.h">
       <Filter>utils\inc</Filter>
     </ClInclude>
+    <ClInclude Include="..\ext\curves\curve_editor.h">
+      <Filter>imgui\ext\curve</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\imgui_styles.cpp">
@@ -126,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ImGuiObjectEditor.cpp">
       <Filter>utils\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\curves\curve_editor.cpp">
+      <Filter>imgui\ext\curve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

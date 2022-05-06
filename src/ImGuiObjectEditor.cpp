@@ -58,7 +58,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 		ImGui::Text("Dictinary Is Empty. ");
 	}
 
-	ImGui::BeginChild("child_2", {0, 0}, true, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground);
+	ImGui::BeginChild("child_2", {ImGui::GetWindowContentRegionWidth(), 150}, true, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground);
 	for (auto childo : active->items) {
 		ImGui::PushID((int) childo.entry_idx);
 
@@ -296,7 +296,7 @@ object_path stringo_view(StringObject* in, Object*& clipboard, objects_api* oh) 
 		memcp(val, in->val.cstr(), in->val.size() + 1);
 	}
 
-	ImGui::InputTextMultiline(" ", val, 2048, {ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowContentRegionWidth() * 1.1f});
+	ImGui::InputTextMultiline(" ", val, 2048, {ImGui::GetWindowContentRegionWidth() - 25, ImGui::GetWindowContentRegionWidth() * 1.1f});
 
 	if (in->val != val) {
 		in->val = string(val).capture();
@@ -309,10 +309,10 @@ object_path floato_view(Object* in, Object*& clipboard, objects_api* oh) {
 	return object_path();
 }
 
-void ImGuiObjectEditor::oexplorer() {
+void ImGuiObjectEditor::oexplorer(halnf width) {
 
 	//ImGui::Text("View Path: "); ImGui::SameLine();
-	ImGui::BeginChild("child_path", {ImGui::GetWindowContentRegionWidth(), 45}, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_HorizontalScrollbar);
+	ImGui::BeginChild("child_path", {width, 45}, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_HorizontalScrollbar);
 	stack<object_path*> rev_path;
 	for (auto childo = view_path.last; childo; childo = childo->prev) {
 		rev_path.push(&childo->data);
@@ -410,7 +410,6 @@ void ImGuiObjectEditor::oexplorer() {
 }
 
 void ImGuiObjectEditor::oproperties(const ObjectType* type) {
-	ImGui::SameLine();
 	ImGui::Text("Type: %s", type->name.cstr());
 	if (type->base) {
 		ImGui::Text("Inherits From"); ImGui::SameLine();
@@ -420,8 +419,8 @@ void ImGuiObjectEditor::oproperties(const ObjectType* type) {
 			ImGui::PopID();
 		}
 	}
-	ImGui::Text("Object Struct Size: %i bytes", type->size);
-	if (type->save_size) ImGui::Text("Object Save Size: %i bytes", type->save_size(active));
+	ImGui::Text("Struct Size: %i bytes", type->size);
+	if (type->save_size) ImGui::Text("Save Size: %i bytes", type->save_size(active));
 
 	if (type->methods) {
 		ImGui::BeginChild("methods", {ImGui::GetWindowContentRegionWidth(), 350}, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_HorizontalScrollbar);
@@ -441,7 +440,7 @@ void ImGuiObjectEditor::oproperties(const ObjectType* type) {
 void ImGuiObjectEditor::Draw() {
 
 	if (WindowEditor("Explorer")) {
-		oexplorer();
+		oexplorer(ImGui::GetWindowContentRegionWidth());
 	}
 	ImGui::End();
 

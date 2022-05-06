@@ -77,7 +77,7 @@ namespace ImGui {
 		}
 
 		void Draw();
-		void oexplorer();
+		void oexplorer(halnf width);
 		void oproperties(const ObjectType*);
 
 		~ImGuiObjectEditor() {
