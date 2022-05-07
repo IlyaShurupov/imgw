@@ -346,6 +346,13 @@ void CompleteApp::draw_debug_info() {
 	End();
 }
 
+ImGui::ImGuiPopupData ImGui::ButtonHoverPopupBegin(const char* id, vec2f butsize, vec2f popupsize) {
+	ImVec2 curs = ImGui::GetCursorScreenPos();
+	vec2f popup_pos = vec2f(curs.x + butsize.x / 2.f - popupsize.x / 2.f, (curs.y + butsize.y + 7));
+	ImGui::Button(id, ImVec2(butsize.x, butsize.y)); ImGui::SameLine();
+	return HoverPopupBegin(id, popupsize, popup_pos);
+}
+
 ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, vec2f size, vec2f pos_p, ImGuiPopupFlags popup_flags) {
 	ImGui::ImGuiPopupData out;
 	out.ishovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup);

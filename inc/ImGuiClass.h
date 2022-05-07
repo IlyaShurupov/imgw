@@ -36,6 +36,7 @@ namespace ImGui {
 		}
 	};
 
+	ImGuiPopupData ButtonHoverPopupBegin(const char* id, vec2f butsize = 200, vec2f popupsize = 200);
 	ImGuiPopupData HoverPopupBegin(const char* id, vec2f size = 200, vec2f pos = -1, ImGuiPopupFlags flags = 0);
 	void HoverPopupEnd(ImGuiPopupData& in);
 
