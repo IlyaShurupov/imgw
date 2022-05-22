@@ -29,26 +29,26 @@ namespace ImGui {
 	struct ImGuiPopupData {
 		bool opened = false;
 		bool ishovered = false;
-		vec2f p1 = 0;
-		vec2f p2 = 0;
+		tp::vec2f p1 = 0;
+		tp::vec2f p2 = 0;
 		operator bool() {
 			return opened;
 		}
 	};
 
-	ImGuiPopupData ButtonHoverPopupBegin(const char* id, vec2f butsize = 200, vec2f popupsize = 200);
-	ImGuiPopupData HoverPopupBegin(const char* id, vec2f size = 200, vec2f pos = -1, ImGuiPopupFlags flags = 0);
+	ImGuiPopupData ButtonHoverPopupBegin(const char* id, tp::vec2f butsize = 200, tp::vec2f popupsize = 200);
+	ImGuiPopupData HoverPopupBegin(const char* id, tp::vec2f size = 200, tp::vec2f pos = -1, ImGuiPopupFlags flags = 0);
 	void HoverPopupEnd(ImGuiPopupData& in);
 
 	class DefaultWraper {
 
 		ImDrawList* draw_list = NULL;
-		ogl::window* winp;
+		tp::ogl::window* winp;
 
 		public:
 
 		DefaultWraper();
-		void init(ogl::window* window);
+		void init(tp::ogl::window* window);
 
 		void frame_start();
 
@@ -56,26 +56,26 @@ namespace ImGui {
 
 		virtual ~DefaultWraper();
 
-		void DrawRectF(rectf rect, rgba col, halnf roundness);
-		void DrawCircle(vec2f center, halnf radius, rgba col, halnf thickness = 2.f);
-		void DrawCircleF(vec2f center, halnf radius, rgba col);
-		void DrawTrigF(vec2f p1, vec2f p2, vec2f p3, rgba col);
-		void DrawLine(vec2f p1, vec2f p2, rgba col, halnf thickness);
-		void DrawTextR(rectf rec, const char* text, rgba col);
-		void Texture(rectf rec, const char* TextureId, GLuint buff = 0);
+		void DrawRectF(tp::rectf rect, tp::rgba col, tp::halnf roundness);
+		void DrawCircle(tp::vec2f center, tp::halnf radius, tp::rgba col, tp::halnf thickness = 2.f);
+		void DrawCircleF(tp::vec2f center, tp::halnf radius, tp::rgba col);
+		void DrawTrigF(tp::vec2f p1, tp::vec2f p2, tp::vec2f p3, tp::rgba col);
+		void DrawLine(tp::vec2f p1, tp::vec2f p2, tp::rgba col, tp::halnf thickness);
+		void DrawTextR(tp::rectf rec, const char* text, tp::rgba col);
+		void Texture(tp::rectf rec, const char* TextureId, GLuint buff = 0);
 
 		private:
 	};
 
 	class CompleteApp : public DefaultWraper {
 
-		fpscount fps;
-		fpscount window_fps;
+		tp::fpscount fps;
+		tp::fpscount window_fps;
 
 		public:
 
-		ogl::opengl gl;
-		ogl::window window;
+		tp::ogl::opengl gl;
+		tp::ogl::window window;
 
 		bool main_window = true;
 		bool debug_info = false;
@@ -83,10 +83,10 @@ namespace ImGui {
 		bool need_update = false;
 		bool gui_is_active = false;
 		bool clear_frames = true;
-		halni max_proc_fps = 100;
+		tp::halni max_proc_fps = 100;
 
 		CompleteApp();
-		CompleteApp(const vec2f& rect, alni window_params = 0, const char* style = 0);
+		CompleteApp(const tp::vec2f& rect, tp::alni window_params = 0, const char* style = 0);
 
 		virtual void MainProcTick() {}
 		virtual void MainDrawTick() { Text("Hello"); }

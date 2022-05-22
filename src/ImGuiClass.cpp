@@ -55,7 +55,7 @@ const char* get_font_path() {
 	return path;
 }
 
-void DefaultWraper::init(ogl::window* window) {
+void DefaultWraper::init(tp::ogl::window* window) {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -210,43 +210,43 @@ void DefaultWraper::frame_end() {
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void DefaultWraper::DrawRectF(rectf rect, rgba col, halnf roundness) {
+void DefaultWraper::DrawRectF(tp::rectf rect, tp::rgba col, tp::halnf roundness) {
 	rect.invy(winp->size.y);
 	draw_list->AddRectFilled(ImVec2(rect.x, rect.y), ImVec2(rect.x + rect.z, rect.y + rect.w),
 		ImColor(col.r, col.g, col.b, col.a), roundness);
 }
 
-void DefaultWraper::DrawCircle(vec2f center, halnf radius, rgba col, halnf thickness) {
+void DefaultWraper::DrawCircle(tp::vec2f center, tp::halnf radius, tp::rgba col, tp::halnf thickness) {
 	center.y = winp->size.y - center.y;
 	draw_list->AddCircle(ImVec2(center.x, center.y), radius, ImColor(col.r, col.g, col.b, col.a), 32, thickness);
 }
 
-void DefaultWraper::DrawCircleF(vec2f center, halnf radius, rgba col) {
+void DefaultWraper::DrawCircleF(tp::vec2f center, tp::halnf radius, tp::rgba col) {
 	center.y = winp->size.y - center.y;
 	draw_list->AddCircleFilled(ImVec2(center.x, center.y), radius, ImColor(col.r, col.g, col.b, col.a), 32);
 }
 
-void DefaultWraper::DrawLine(vec2f p1, vec2f p2, rgba col, halnf thickness) {
+void DefaultWraper::DrawLine(tp::vec2f p1, tp::vec2f p2, tp::rgba col, tp::halnf thickness) {
 	p1.y = winp->size.y - p1.y;
 	p2.y = winp->size.y - p2.y;
 
 	draw_list->AddLine(ImVec2(p1.x, p1.y), ImVec2(p2.x, p2.y), ImColor(col.r, col.g, col.b, col.a), thickness);
 }
 
-void ImGui::DefaultWraper::DrawTextR(rectf rec, const char* text, rgba col) {
+void ImGui::DefaultWraper::DrawTextR(tp::rectf rec, const char* text, tp::rgba col) {
 	rec.invy(winp->size.y);
 	draw_list->AddText(ImVec2(rec.pos.x, rec.pos.y), ImColor(col.r, col.g, col.b, col.a), text);
 }
 
-void ImGui::DefaultWraper::Texture(rectf rec, const char* TextureId, GLuint buff) {
-	GLuint tex = get_tex(TextureId);
+void ImGui::DefaultWraper::Texture(tp::rectf rec, const char* TextureId, GLuint buff) {
+	GLuint tex = tp::get_tex(TextureId);
 	if (tex) {
 		winp->set_viewport(rec);
-		draw_texture(buff, tex);
+		tp::draw_texture(buff, tex);
 	}
 }
 
-void ImGui::DefaultWraper::DrawTrigF(vec2f p1, vec2f p2, vec2f p3, rgba col) {
+void ImGui::DefaultWraper::DrawTrigF(tp::vec2f p1, tp::vec2f p2, tp::vec2f p3, tp::rgba col) {
 	p1.y = winp->size.y - p1.y;
 	p2.y = winp->size.y - p2.y;
 	p3.y = winp->size.y - p3.y;
@@ -267,12 +267,12 @@ DefaultWraper::~DefaultWraper() {
 CompleteApp::CompleteApp() {
 	init(&window);
 
-	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
+	window.col_clear = tp::rgba(0.22f, 0.22f, 0.24f, 0.96f);
 }
 
-CompleteApp::CompleteApp(const vec2f& rect, alni window_params, const char* style) : window(rect, window_params) {
+CompleteApp::CompleteApp(const tp::vec2f& rect, tp::alni window_params, const char* style) : window(rect, window_params) {
 	init(&window);
-	window.col_clear = rgba(0.22f, 0.22f, 0.24f, 0.96f);
+	window.col_clear = tp::rgba(0.22f, 0.22f, 0.24f, 0.96f);
 
 	if (style) StyleEditorLoad(style);
 	apply_style();
@@ -346,21 +346,21 @@ void CompleteApp::draw_debug_info() {
 	End();
 }
 
-ImGui::ImGuiPopupData ImGui::ButtonHoverPopupBegin(const char* id, vec2f butsize, vec2f popupsize) {
+ImGui::ImGuiPopupData ImGui::ButtonHoverPopupBegin(const char* id, tp::vec2f butsize, tp::vec2f popupsize) {
 	ImVec2 curs = ImGui::GetCursorScreenPos();
-	vec2f popup_pos = vec2f(curs.x + butsize.x / 2.f - popupsize.x / 2.f, (curs.y + butsize.y + 7));
+	tp::vec2f popup_pos = tp::vec2f(curs.x + butsize.x / 2.f - popupsize.x / 2.f, (curs.y + butsize.y + 7));
 	ImGui::Button(id, ImVec2(butsize.x, butsize.y)); ImGui::SameLine();
 	return HoverPopupBegin(id, popupsize, popup_pos);
 }
 
-ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, vec2f size, vec2f pos_p, ImGuiPopupFlags popup_flags) {
+ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, tp::vec2f size, tp::vec2f pos_p, ImGuiPopupFlags popup_flags) {
 	ImGui::ImGuiPopupData out;
 	out.ishovered = ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup);
 
 	if (out.ishovered) {
 		ImVec2 pos;
 		
-		if (pos_p == vec2f(-1)) {
+		if (pos_p == tp::vec2f(-1)) {
 			pos = GImGui->CurrentWindow->DC.CursorPos;
 		} else {
 			pos.x = pos_p.x;
@@ -398,9 +398,9 @@ void ImGui::HoverPopupEnd(ImGui::ImGuiPopupData& in) {
 
 	in.ishovered |= IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_ChildWindows);
 
-	vec2f mousepos = { ImGui::GetMousePos().x, ImGui::GetMousePos().y };
-	halnf tollerance = 10;
-	rectf tollerace_rect = rectf(vec2f(in.p1.x, in.p1.y - tollerance), vec2f(in.p2.x - in.p1.x, tollerance * 2.f));
+	tp::vec2f mousepos = { ImGui::GetMousePos().x, ImGui::GetMousePos().y };
+	tp::halnf tollerance = 10;
+	tp::rectf tollerace_rect = tp::rectf(tp::vec2f(in.p1.x, in.p1.y - tollerance), tp::vec2f(in.p2.x - in.p1.x, tollerance * 2.f));
 	bool is_tollerance = tollerace_rect.inside(mousepos);
 
 	if (!(in.ishovered || is_tollerance)) {

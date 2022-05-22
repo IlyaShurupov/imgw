@@ -7,12 +7,12 @@
 
 using namespace ImGui;
 
-object_path nullo_view(Object* in, Object*& clipboard, objects_api* oh) {
+object_path nullo_view(obj::Object* in, obj::Object*& clipboard, obj::objects_api* oh) {
 	ImGui::Text("Null Object.");
 	return object_path();
 }
 
-object_path linko_view(LinkObject* in, Object*& clipboard, objects_api* oh) {
+object_path linko_view(obj::LinkObject* in, obj::Object*& clipboard, obj::objects_api* oh) {
 
 	if (in->link) {
 
@@ -39,20 +39,20 @@ object_path linko_view(LinkObject* in, Object*& clipboard, objects_api* oh) {
 	return object_path();
 }
 
-object_path into_view(IntObject* in, Object*& clipboard, objects_api* oh) {
+object_path into_view(obj::IntObject* in, obj::Object*& clipboard, obj::objects_api* oh) {
 	ImGui::Text("Int Value: "); ImGui::SameLine();
 	int val = (int) in->val;
 	ImGui::InputInt(" ", &val);
-	in->val = (alni) val;
+	in->val = (tp::alni) val;
 	return object_path();
 }
 
-object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) {
+object_path dicto_view(obj::DictObject* active, obj::Object*& clipboard, obj::objects_api* oh) {
 
 	bool popup = false;
 	object_path out;
 
-	if (active->items.nentries) {
+	if (active->items.size()) {
 		ImGui::Text("Dictinary Items: ");
 	} else {
 		ImGui::Text("Dictinary Is Empty. ");
@@ -73,21 +73,21 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 
 			ImGui::Text("%s at %x", childo->val->type->name.cstr(), childo->val);
 
-			static Object* name_parent = NULL;
+			static obj::Object* name_parent = NULL;
 			static char name[100] = {"asdas"};
 
 			if (name_parent != childo) {
-				memcp(name, childo->key.cstr(), childo->key.size() + 1);
+				tp::memcp(name, childo->key.cstr(), childo->key.size() + 1);
 				name_parent = childo;
 			}
 
 			if (ImGui::InputTextEx(" ", "new name", name, 100, {140 , 30}, ImGuiInputTextFlags_EnterReturnsTrue)) {
-				alni idx = active->items.Presents(name);
+				tp::alni idx = active->items.presents(name);
 				if (idx != -1) {
 					Notify("Object with such name Already Exists");
 				} else {
-					active->items.Remove(childo->key);
-					active->items.Put(string(name).capture(), name_parent);
+					active->items.remove(childo->key);
+					active->items.put(tp::string(name).capture(), name_parent);
 					name_parent = NULL;
 					ImGui::EndPopup();
 					ImGui::PopID();
@@ -96,7 +96,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 			}
 
 			if (ImGui::Selectable("Exclude")) {
-				active->items.Remove(childo->key);
+				active->items.remove(childo->key);
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
@@ -104,7 +104,7 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 
 			if (ImGui::Selectable("Destroy")) {
 				oh->destroy(childo->val);
-				active->items.Remove(childo->key);
+				active->items.remove(childo->key);
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
@@ -129,16 +129,16 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 
 		if (ImGui::Selectable("Paste")) {
 
-			alni idx = 1;
-			string name_base = string("clipboard ") + clipboard->type->name + string(" ");
-			string name_out = name_base;
+			tp::alni idx = 1;
+			tp::string name_base = tp::string("clipboard ") + clipboard->type->name + tp::string(" ");
+			tp::string name_out = name_base;
 
-			while (active->items.Presents(name_out)) {
-				name_out = name_base + string(idx);
+			while (active->items.presents(name_out)) {
+				name_out = name_base + tp::string(idx);
 				idx++;
 			}
 
-			active->items.Put(name_out, clipboard);
+			active->items.put(name_out, clipboard);
 		}
 
 		if (ImGui::BeginMenu("Create")) {
@@ -151,18 +151,18 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 				ImGui::PushID((int) childo.entry_idx);
 
 				if (ImGui::Selectable(childo.iter->key.cstr())) {
-					Object* newo = oh->create(childo->key);
+					obj::Object* newo = oh->create(childo->key);
 
-					alni idx = 1;
-					string name_base = string("new ") + newo->type->name + string(" ");
-					string name_out = name_base;
+					tp::alni idx = 1;
+					tp::string name_base = tp::string("new ") + newo->type->name + tp::string(" ");
+					tp::string name_out = name_base;
 
-					while (active->items.Presents(name_out)) {
-						name_out = name_base + string(idx);
+					while (active->items.presents(name_out)) {
+						name_out = name_base + tp::string(idx);
 						idx++;
 					}
 
-					active->items.Put(name_out, newo);
+					active->items.put(name_out, newo);
 
 					ImGui::PopID();
 					break;
@@ -182,11 +182,11 @@ object_path dicto_view(DictObject* active, Object*& clipboard, objects_api* oh) 
 	return out;
 }
 
-object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) {
+object_path listo_view(obj::ListObject* active, obj::Object*& clipboard, obj::objects_api* oh) {
 	bool popup = false;
 	object_path out;
 
-	if (active->items.Len()) {
+	if (active->items.length()) {
 		ImGui::Text("List Items: ");
 	} else {
 		ImGui::Text("List Is Empty. ");
@@ -197,7 +197,7 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 		ImGui::PushID((int) childo.Idx());
 
 		if (ImGui::Selectable(childo->type->name.cstr())) {
-			out = object_path(childo.Data(), childo->type->name + " at " + string(childo.Idx()));
+			out = object_path(childo.Data(), childo->type->name + " at " + tp::string(childo.Idx()));
 			ImGui::PopID();
 			break;
 		}
@@ -208,7 +208,7 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 			ImGui::Text("%s at %x", childo->type->name.cstr(), childo.Data());
 
 			if (ImGui::Selectable("Exclude")) {
-				active->items.DelNode(childo.node());
+				active->items.delNode(childo.node());
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
@@ -222,14 +222,14 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 			}
 
 			if (childo.node()->prev && ImGui::Selectable("Move Up")) {
-				SWAP(childo.node()->prev->data, childo.Data(), Object*);
+				SWAP(childo.node()->prev->data, childo.Data(), obj::Object*);
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
 			}
 
 			if (childo.node()->next && ImGui::Selectable("Move Down")) {
-				SWAP(childo.node()->next->data, childo.Data(), Object*);
+				SWAP(childo.node()->next->data, childo.Data(), obj::Object*);
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
@@ -237,7 +237,7 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 
 			if (ImGui::Selectable("Destroy")) {
 				oh->destroy(childo.Data());
-				active->items.DelNode(childo.node());
+				active->items.delNode(childo.node());
 				ImGui::EndPopup();
 				ImGui::PopID();
 				break;
@@ -253,7 +253,7 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 	if (!popup && ImGui::BeginPopupContextItem("child_2", ImGuiPopupFlags_MouseButtonRight)) {
 
 		if (ImGui::Selectable("Paste")) {
-			active->items.PushBack(clipboard);
+			active->items.pushBack(clipboard);
 		}
 
 		if (ImGui::BeginMenu("Create")) {
@@ -266,8 +266,8 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 				ImGui::PushID((int) childo.entry_idx);
 
 				if (ImGui::Selectable(childo.iter->key.cstr())) {
-					Object* newo = oh->create(childo->key);
-					active->items.PushBack(newo);
+					obj::Object* newo = oh->create(childo->key);
+					active->items.pushBack(newo);
 					ImGui::PopID();
 					break;
 				}
@@ -286,38 +286,38 @@ object_path listo_view(ListObject* active, Object*& clipboard, objects_api* oh) 
 	return out;
 }
 
-object_path stringo_view(StringObject* in, Object*& clipboard, objects_api* oh) {
+object_path stringo_view(obj::StringObject* in, obj::Object*& clipboard, obj::objects_api* oh) {
 
 	ImGui::Text("String Data: ");
 
 	static char val[2048] = {" "};
 
 	if (in->val != val) {
-		memcp(val, in->val.cstr(), in->val.size() + 1);
+		tp::memcp(val, in->val.cstr(), in->val.size() + 1);
 	}
 
 	ImGui::InputTextMultiline(" ", val, 2048, {ImGui::GetWindowContentRegionWidth() - 25, ImGui::GetWindowContentRegionWidth() * 1.1f});
 
 	if (in->val != val) {
-		in->val = string(val).capture();
+		in->val = tp::string(val).capture();
 	}
 
 	return object_path();
 }
 
-object_path floato_view(Object* in, Object*& clipboard, objects_api* oh) {
+object_path floato_view(obj::Object* in, obj::Object*& clipboard, obj::objects_api* oh) {
 	return object_path();
 }
 
-void ImGuiObjectEditor::oexplorer(halnf width) {
+void ImGuiObjectEditor::oexplorer(tp::halnf width) {
 
 	//ImGui::Text("View Path: "); ImGui::SameLine();
 	ImGui::BeginChild("child_path", {width, 45}, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_HorizontalScrollbar);
-	stack<object_path*> rev_path;
+	tp::Stack<object_path*> rev_path;
 	for (auto childo = view_path.last; childo; childo = childo->prev) {
 		rev_path.push(&childo->data);
 	}
-	alni idx = 0;
+	tp::alni idx = 0;
 	for (auto childo = rev_path.last; childo; childo = childo->prev) {
 		ImGui::PushID((int) idx);
 		bool go_back = false;
@@ -330,7 +330,7 @@ void ImGuiObjectEditor::oexplorer(halnf width) {
 
 		if (ImGui::BeginPopupContextItem(NULL, ImGuiPopupFlags_MouseButtonRight)) {
 
-			Object* curretn_object = childo->data->obj;
+			obj::Object* curretn_object = childo->data->obj;
 			ImGui::Text("%s at %x", curretn_object->type->name.cstr(), curretn_object);
 			ImGui::Separator();
 
@@ -339,8 +339,8 @@ void ImGuiObjectEditor::oexplorer(halnf width) {
 			}
 
 			if (ImGui::Selectable("Instantiate  ")) {
-				clipboard = NDO->create(curretn_object->type->name.cstr());
-				NDO->copy(clipboard, curretn_object);
+				clipboard = obj::NDO->create(curretn_object->type->name.cstr());
+				obj::NDO->copy(clipboard, curretn_object);
 				Notify("Object copied to clipboard");
 			}
 
@@ -353,12 +353,12 @@ void ImGuiObjectEditor::oexplorer(halnf width) {
 			bool load_object = ImGui::Selectable("Load Object");
 
 			if (save_object) {
-				NDO->save(curretn_object, path_str);
+				obj::NDO->save(curretn_object, path_str);
 				Notify("Object saved");
 			}
 
 			if (load_object) {
-				Object* loadedo = NDO->load(path_str);
+				obj::Object* loadedo = obj::NDO->load(path_str);
 				if (loadedo) {
 					clipboard = loadedo;
 					Notify("Object copied to clipboard");
@@ -386,19 +386,19 @@ void ImGuiObjectEditor::oexplorer(halnf width) {
 	ImGui::Separator();
 	object_path new_active;
 	if (active->type->name == "null") {
-		new_active = nullo_view(active, clipboard, NDO);
+		new_active = nullo_view(active, clipboard, obj::NDO);
 	} else if (active->type->name == "link") {
-		new_active = linko_view((LinkObject*) active, clipboard, NDO);
+		new_active = linko_view((obj::LinkObject*) active, clipboard, obj::NDO);
 	} else if (active->type->name == "int") {
-		new_active = into_view((IntObject*) active, clipboard, NDO);
+		new_active = into_view((obj::IntObject*) active, clipboard, obj::NDO);
 	} else if (active->type->name == "float") {
-		new_active = floato_view(active, clipboard, NDO);
+		new_active = floato_view(active, clipboard, obj::NDO);
 	} else if (active->type->name == "str") {
-		new_active = stringo_view((StringObject*) active, clipboard, NDO);
+		new_active = stringo_view((obj::StringObject*) active, clipboard, obj::NDO);
 	} else if (active->type->name == "list") {
-		new_active = listo_view((ListObject*) active, clipboard, NDO);
+		new_active = listo_view((obj::ListObject*) active, clipboard, obj::NDO);
 	} else if (active->type->name == "dict") {
-		new_active = dicto_view((DictObject*) active, clipboard, NDO);
+		new_active = dicto_view((obj::DictObject*) active, clipboard, obj::NDO);
 	} else {
 		ImGui::Text("Preview is Unavaliable");
 	}
@@ -409,7 +409,7 @@ void ImGuiObjectEditor::oexplorer(halnf width) {
 	}
 }
 
-void ImGuiObjectEditor::oproperties(const ObjectType* type) {
+void ImGuiObjectEditor::oproperties(const obj::ObjectType* type) {
 	ImGui::Text("Type: %s", type->name.cstr());
 	if (type->base) {
 		ImGui::Text("Inherits From"); ImGui::SameLine();
@@ -427,8 +427,8 @@ void ImGuiObjectEditor::oproperties(const ObjectType* type) {
 
 		ImGui::Text("type Methods: ");
 
-		for (alni idx = 0; type->methods[idx].adress; idx++) {
-			type_method* method = &type->methods[idx];
+		for (tp::alni idx = 0; type->methods[idx].adress; idx++) {
+			obj::type_method* method = &type->methods[idx];
 			ImGui::PushID(method->name.cstr());
 			ImGui::Text("%s", method->name.cstr());
 			ImGui::PopID();

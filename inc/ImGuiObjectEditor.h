@@ -15,38 +15,38 @@
 
 namespace ImGui {
 	struct object_path {
-		object_path(Object* obj, string id) : obj(obj), id(id) {}
+		object_path(obj::Object* obj, tp::string id) : obj(obj), id(id) {}
 		object_path() {
 			obj = NULL;
 		}
 
 		operator bool() { return obj; }
-		Object* obj;
-		string id;
+		obj::Object* obj;
+		tp::string id;
 	};
 
 
 	struct ImGuiObjectEditor {
 
-		stack<object_path> view_path;
+		tp::Stack<object_path> view_path;
 
-		DictObject* root = NULL;
-		Object* active = NULL;
+		obj::DictObject* root = NULL;
+		obj::Object* active = NULL;
 
-		Object* clipboard = NULL;
-		string save_path;
+		obj::Object* clipboard = NULL;
+		tp::string save_path;
 
 		ImGuiObjectEditor() {
-			assert(NDO && "Objects library is not initialized");
-			root = (DictObject*) NDO->create("dict");
+			assert(obj::NDO && "Objects library is not initialized");
+			root = (obj::DictObject*) obj::NDO->create("dict");
 			default_init();
 		}
 
-		ImGuiObjectEditor(string path) {
-			assert(NDO && "Objects library is not initialized");
+		ImGuiObjectEditor(tp::string path) {
+			assert(obj::NDO && "Objects library is not initialized");
 			load(path);
 			if (!root) {
-				root = (DictObject*) NDO->create("dict");
+				root = (obj::DictObject*) obj::NDO->create("dict");
 			}
 			default_init();
 			save_path = path;
@@ -57,34 +57,34 @@ namespace ImGui {
 			view_path.push({active , "dict 'root'"});
 		}
 
-		void cd(Object* child, const char* name) {
+		void cd(obj::Object* child, const char* name) {
 			active = child;
 			view_path.push({active , name});
 		}
 
-		void save(string path) {
+		void save(tp::string path) {
 			if (root) {
-				NDO->save(root, path);
+				obj::NDO->save(root, path);
 			}
 		}
-		void load(string path) {
-			Object* obj = NDO->load(path);
+		void load(tp::string path) {
+			obj::Object* obj = obj::NDO->load(path);
 			if (!obj || obj->type->name != "dict") {
-				NDO->destroy(obj);
+				obj::NDO->destroy(obj);
 				return;
 			}
-			root = NDO_CAST(DictObject, obj);
+			root = NDO_CAST(obj::DictObject, obj);
 		}
 
 		void Draw();
-		void oexplorer(halnf width);
-		void oproperties(const ObjectType*);
+		void oexplorer(tp::halnf width);
+		void oproperties(const obj::ObjectType*);
 
 		~ImGuiObjectEditor() {
 			if (save_path != " ") {
 				save(save_path);
 			}
-			NDO->destroy(root);
+			obj::NDO->destroy(root);
 		}
 	};
 };
