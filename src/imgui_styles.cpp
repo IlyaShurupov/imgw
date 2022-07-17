@@ -11,13 +11,13 @@ using namespace ImGui;
 struct inactive_col {
 	int r = 0;
 	int g = 0;
-	int b = 10;
+	int b = 0;
 };
 
 struct active_col {
 	int r = 40;
-	int g = 30;
-	int b = 10;
+	int g = 40;
+	int b = 40;
 };
 
 active_col ac;

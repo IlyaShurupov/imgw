@@ -282,6 +282,7 @@ void CompleteApp::Run() {
 
 	while (!window.CloseSignal()) {
 
+		window.update_event_queue(whait_for_event && (!need_update));
 		window.begin_draw(need_update);
 
 		if (window.new_frame) {
@@ -327,7 +328,7 @@ void CompleteApp::Run() {
 			need_update = true;
 		}
 
-		window.end_draw(whait_for_event && (!need_update));
+		window.end_draw();
 
 		if (window.draw_event) {
 			window_fps.update(false);
@@ -376,10 +377,10 @@ ImGui::ImGuiPopupData ImGui::HoverPopupBegin(const char* str_id, tp::vec2f size,
 		out.p2.x += ImGui::GetWindowWidth();
 	}
 
+	ImGui::SetNextWindowSize(ImVec2(size.x, size.y));
+
 	if (BeginPopup(str_id, ImGuiWindowFlags_NoMove)) {
 		out.opened = true;
-
-		ImGui::SetNextItemWidth(size.x);
 
 		auto pos = GetWindowPos();
 		out.p1 = {pos.x, pos.y};

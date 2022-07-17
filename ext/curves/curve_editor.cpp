@@ -35,7 +35,7 @@ namespace ImGui {
     enum { GRAB_RADIUS = 8 }; // handlers: circle radius
     enum { GRAB_BORDER = 2 }; // handlers: circle border width
     enum { AREA_CONSTRAINED = true }; // should grabbers be constrained to grid area?
-    enum { AREA_WIDTH = 200 }; // area width in pixels. 0 for adaptive size (will use max avail width)
+    enum { AREA_WIDTH = 100 }; // area width in pixels. 0 for adaptive size (will use max avail width)
 
     // curve presets
     static struct { const char* name; float points[4]; } presets[] = {

@@ -2,6 +2,7 @@
 #pragma once
 
 #define IMGW_OBJECTS_LIB
+#define IMGW_OBJECTS_NODES_LIB
 
 #ifdef IMGW_OBJECTS_LIB
 
@@ -70,7 +71,7 @@ namespace ImGui {
 		void load(tp::string path) {
 			obj::Object* obj = obj::NDO->load(path);
 			if (!obj || obj->type->name != "dict") {
-				obj::NDO->destroy(obj);
+				if (obj) obj::NDO->destroy(obj);
 				return;
 			}
 			root = NDO_CAST(obj::DictObject, obj);
@@ -78,7 +79,7 @@ namespace ImGui {
 
 		void Draw();
 		void oexplorer(tp::halnf width);
-		void oproperties(const obj::ObjectType*);
+		void oproperties(const obj::ObjectType*, bool top_of_tree_vew = true);
 
 		~ImGuiObjectEditor() {
 			if (save_path != " ") {

@@ -109,9 +109,6 @@
     <ClCompile Include="..\ext\imgui\imgui_draw.cpp">
       <Filter>imgui\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\ext\imgui\imgui_demo.cpp">
-      <Filter>imgui\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\ext\imgui\imgui.cpp">
       <Filter>imgui\src</Filter>
     </ClCompile>
