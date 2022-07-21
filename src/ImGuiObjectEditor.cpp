@@ -8,8 +8,9 @@
 using namespace ImGui;
 
 void imgui_object_preview(obj::Object* childo, obj::Object*& clipboard, obj::objects_api* oh);
+object_path dicto_view(obj::DictObject* active, obj::Object*& clipboard, obj::objects_api* oh);
 
-#ifdef IMGW_OBJECTS_LIB
+#ifdef IMGW_OBJECTS_NODES_LIB
 #include "nodes.h"
 
 void imgui_nodes_operator_info(nd::Operator* op) {
@@ -70,7 +71,7 @@ bool imgui_nodes_operator_selector(nd::Operator*& out_op, const obj::ObjectType*
 			if (operators) {
 
 				for (auto op : *operators->getDict()) {
-					
+
 					ImGui::PushID(op.entry_idx);
 					if (ImGui::Button("Select")) {
 						out_type = childo->val->getType();
@@ -104,31 +105,65 @@ bool imgui_nodes_operator_selector(nd::Operator*& out_op, const obj::ObjectType*
 
 object_path nodes_requesto_view(nd::Requester* in, obj::Object*& clipboard, obj::objects_api* oh) {
 
+	bool shortcut = NDO_CAST(nd::Shortcut, in);
+	bool show_args = false;
+
 	if (in->op_type) {
 
 		ImGui::Text("%s", in->op->getDescription().cstr());
 
-		for (auto callback : in->callbacks_arguments->items) {
+		if (shortcut) {
 
-			if (ImGui::Button("Exeucte", {60, 27})) {
-				in->call(callback->key);
-			}
-
-			ImGui::SameLine();
-
-			if (ImGui::TreeNode(callback->key.cstr())) {
-
-				NDO_CASTV(obj::DictObject, callback->val, args);
-				assert(args);
-				for (auto arg : args->items) {
-					ImGui::Text(arg->key.cstr()); ImGui::SameLine();
-					ImGui::PushID(arg->key.cstr());
-					imgui_object_preview(arg->val, clipboard, oh);
-					ImGui::PopID();
-				}
+			if (ImGui::TreeNode("Triggers")) {
+				object_path out = dicto_view(NDO_CAST(nd::Shortcut, in)->callbacks_triggers, clipboard, oh);
 
 				ImGui::TreePop();
+
+				if (out) {
+					return out;
+				}
 			}
+
+			show_args = ImGui::TreeNode("Arguments");
+
+		} else {
+			show_args = true;
+		}
+
+		if (show_args) {
+			for (auto callback : in->callbacks_arguments->items) {
+
+				if (ImGui::Button("Exeucte", {60, 27})) {
+					in->call(callback->key);
+				}
+
+				ImGui::SameLine();
+
+				if (ImGui::TreeNode(callback->key.cstr())) {
+
+					NDO_CASTV(obj::DictObject, callback->val, args);
+					assert(args);
+					for (auto arg : args->items) {
+						if (ImGui::Button(arg->key.cstr(), {90, 0})) {
+							ImGui::TreePop();
+							if (shortcut && show_args) {
+								ImGui::TreePop();
+							}
+							return {arg->val, arg->key};
+						}
+						ImGui::SameLine();
+						ImGui::PushID(arg.entry_idx);
+						imgui_object_preview(arg->val, clipboard, oh);
+						ImGui::PopID();
+					}
+
+					ImGui::TreePop();
+				}
+			}
+		}
+
+		if (shortcut && show_args) {
+			ImGui::TreePop();
 		}
 
 		ImGui::Separator();
@@ -659,7 +694,7 @@ void ImGuiObjectEditor::oexplorer(tp::halnf width) {
 		new_active = enumo_view((obj::EnumObject*) active, clipboard, obj::NDO);
 		#ifdef IMGW_OBJECTS_NODES_LIB
 	} else if (NDO_CAST(nd::Requester, active)) {
-		nodes_requesto_view((nd::Requester*) active, clipboard, obj::NDO);
+		new_active = nodes_requesto_view((nd::Requester*) active, clipboard, obj::NDO);
 		#endif
 	} else {
 		ImGui::Text("Preview is Unavaliable");
@@ -687,12 +722,38 @@ void ImGuiObjectEditor::oproperties(const obj::ObjectType* type, bool top_of_tre
 	}
 
 	if (ImGui::TreeNode("Size")) {
-		ImGui::Text("Struct Size: %i bytes", type->size);
-		if (type->save_size) {
-			ImGui::Text("Save Size: %i bytes", type->save_size(active));
-		} else {
-			ImGui::Text("Save Size: none (not defined)");
+		if (0 && ImGui::TreeNode("Top Level Type")) {
+
+			ImGui::Text("RAM : ");
+			ImGui::Indent();
+			ImGui::Text("Only Structure : %i bytes", type->size - (type->base ? type->base->size : 0));
+			ImGui::Text("With Non-Object Links : Not Supported");
+			ImGui::Unindent();
+
+			ImGui::Text("Disk :");
+			ImGui::Indent();
+			ImGui::Text("Only Structure : Currently Not Supported");
+			ImGui::Text("With Object Links : Not Supported");
+			ImGui::Unindent();
+
+			ImGui::TreePop();
 		}
+		//if (ImGui::TreeNode("Full Type Hierarchy")) {
+
+			ImGui::Text("RAM : ");
+			ImGui::Indent();
+			ImGui::Text("Only Structure : %i bytes", type->size);
+			ImGui::Text("With Non-Object Links : Not Supported");
+			ImGui::Unindent();
+
+			ImGui::Text("Disk :");
+			ImGui::Indent();
+			ImGui::Text("Only Structure : %i bytes", obj::NDO->object_full_file_size(active, type));
+			ImGui::Text("With Object Links : %i bytes", obj::NDO->object_full_file_size_recursive(active, type));
+			ImGui::Unindent();
+
+			//ImGui::TreePop();
+		//}
 		ImGui::TreePop();
 	}
 
@@ -749,7 +810,7 @@ void ImGuiObjectEditor::Draw() {
 	}
 	ImGui::End();
 
-	if (WindowEditor("Type Info")) {
+	if (WindowEditor("Objet Info")) {
 		oproperties(active->type);
 	}
 	ImGui::End();
