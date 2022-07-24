@@ -274,10 +274,33 @@ void imgui_object_preview(obj::Object* childo, obj::Object*& clipboard, obj::obj
 
 	if (NDO_CAST(obj::LinkObject, childo)) {
 		NDO_CASTV(obj::LinkObject, childo, linko);
+
+		bool no_link_preview = !linko->link;
+		tp::alni max_depth = 5;
+		tp::alni depth_count = 0;
+		tp::HashMap<tp::alni, tp::alni> link_lookup;
+		obj::LinkObject* link_iter = linko;
+		while (link_iter && link_iter->link && !no_link_preview) {
+			link_iter = NDO_CAST(obj::LinkObject, link_iter->link);
+			depth_count++;
+
+			if (link_lookup.presents(tp::alni(link_iter))) {
+				no_link_preview = true;
+			}
+			else {
+				link_lookup.put(tp::alni(link_iter), 0);
+			}
+			no_link_preview |= max_depth < depth_count;
+		}
+
 		if (linko->link) {
-			ImGui::Text("=> ");
-			ImGui::SameLine();
-			imgui_object_preview(linko->link, clipboard, oh);
+			if (!no_link_preview) {
+				ImGui::Text("=> ");
+				ImGui::SameLine();
+				imgui_object_preview(linko->link, clipboard, oh);
+			} else {
+				ImGui::Text("Max preview depth exceeded");
+			}
 		} else {
 			ImGui::Text("Link Is Null");
 		}
@@ -743,13 +766,14 @@ void ImGuiObjectEditor::oproperties(const obj::ObjectType* type, bool top_of_tre
 			ImGui::Text("RAM : ");
 			ImGui::Indent();
 			ImGui::Text("Only Structure : %i bytes", type->size);
-			ImGui::Text("With Non-Object Links : Not Supported");
+			ImGui::Text("With Non-Object Links : %i bytes", obj::NDO->objsize_ram(active));
+			ImGui::Text("Full Size Recursive : %i bytes", obj::NDO->objsize_ram_recursive(active));
 			ImGui::Unindent();
 
 			ImGui::Text("Disk :");
 			ImGui::Indent();
-			ImGui::Text("Only Structure : %i bytes", obj::NDO->object_full_file_size(active, type));
-			ImGui::Text("With Object Links : %i bytes", obj::NDO->object_full_file_size_recursive(active, type));
+			ImGui::Text("Only Structure : %i bytes", obj::NDO->objsize_file(active));
+			ImGui::Text("With Object Links : %i bytes", obj::NDO->objsize_file_recursive(active));
 			ImGui::Unindent();
 
 			//ImGui::TreePop();

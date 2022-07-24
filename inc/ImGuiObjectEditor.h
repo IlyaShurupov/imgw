@@ -87,6 +87,10 @@ namespace ImGui {
 			}
 			obj::NDO->destroy(root);
 		}
+
+		tp::alni sizeAllocatedMem() {
+			return view_path.sizeAllocatedMem() + sizeof(obj::DictObject*) + sizeof(obj::Object*) * 2 + save_path.sizeAllocatedMem();
+		}
 	};
 };
 #endif
